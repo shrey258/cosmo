@@ -1,7 +1,10 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000'
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000',
+  headers: {
+    'Content-Type': 'application/json'
+  }
 });
 
 export interface Student {
@@ -24,35 +27,60 @@ export interface StudentListResponse {
 export const studentApi = {
   // Get all students with pagination and search
   getStudents: async (page: number = 1, limit: number = 10, search?: string) => {
-    const params = new URLSearchParams({
-      page: page.toString(),
-      limit: limit.toString(),
-      ...(search && { search })
-    });
-    const response = await api.get<StudentListResponse>(`/students?${params}`);
-    return response.data;
+    try {
+      const params = new URLSearchParams({
+        page: page.toString(),
+        limit: limit.toString(),
+        ...(search && { search })
+      });
+      const response = await api.get<StudentListResponse>(`/students?${params}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching students:', error);
+      throw error;
+    }
   },
 
   // Get a single student by ID
   getStudent: async (id: string) => {
-    const response = await api.get<Student>(`/students/${id}`);
-    return response.data;
+    try {
+      const response = await api.get<Student>(`/students/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching student:', error);
+      throw error;
+    }
   },
 
   // Create a new student
   createStudent: async (student: Omit<Student, 'id' | 'created_at' | 'updated_at'>) => {
-    const response = await api.post<Student>('/students', student);
-    return response.data;
+    try {
+      const response = await api.post<Student>('/students', student);
+      return response.data;
+    } catch (error) {
+      console.error('Error creating student:', error);
+      throw error;
+    }
   },
 
   // Update a student
   updateStudent: async (id: string, student: Partial<Student>) => {
-    const response = await api.patch<Student>(`/students/${id}`, student);
-    return response.data;
+    try {
+      const response = await api.patch<Student>(`/students/${id}`, student);
+      return response.data;
+    } catch (error) {
+      console.error('Error updating student:', error);
+      throw error;
+    }
   },
 
   // Delete a student
   deleteStudent: async (id: string) => {
-    await api.delete(`/students/${id}`);
+    try {
+      await api.delete(`/students/${id}`);
+    } catch (error) {
+      console.error('Error deleting student:', error);
+      throw error;
+    }
   }
 };
