@@ -24,7 +24,7 @@ app = FastAPI(title="Student Management System")
 # CORS configuration
 origins = [
     "http://localhost:5173",    # Development
-    "https://student-management-frontend-m46x.onrender.com/",      # Production EC2 IP
+    "https://student-management-frontend-m46x.onrender.com",      # Production EC2 IP
     "http://localhost:8000",    # Production local
 ]
 
