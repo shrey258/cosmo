@@ -55,7 +55,7 @@ This guide provides instructions for deploying the Student Management System to 
    ```
 5. Create .env file:
    ```bash
-   echo "MONGODB_URL=your_mongodb_url" > .env
+   echo "MONGODB_URL=mongodb+srv://Shrey:1amAst%40rboy@nasacluster.6y0i5wu.mongodb.net/cosmo" > .env
    ```
 6. Build and run:
    ```bash

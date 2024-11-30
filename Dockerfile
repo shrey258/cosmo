@@ -1,17 +1,29 @@
+# Build frontend
 FROM node:18-slim as frontend-builder
 
 WORKDIR /frontend
+
+# Install dependencies
 COPY frontend/package*.json ./
 RUN npm install
+
+# Install dev dependencies needed for build
+RUN npm install -D @vitejs/plugin-react @types/react @types/react-dom
+
+# Copy frontend source
 COPY frontend/ ./
+
+# Build frontend
 RUN npm run build
 
+# Build backend
 FROM python:3.11-slim
 
 WORKDIR /app
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
